@@ -9,11 +9,11 @@ export const createOrder = async (req, res) => {
   try {
     const result = await mercadopage.preferences.create({
       items: req.body.items,  // usa los items que llegan desde el cliente
-      notification_url: "https://tienda-compras.onrender.com//webhook",
+      notification_url: "https://tienda-compras.onrender.com/webhook",
       back_urls: {
-        success: "https://tienda-compras.onrender.com//success",
-        //failure: "https://tienda-compras.onrender.com//failure",
-        //pending: "https://tienda-compras.onrender.com//pending",
+        success: "https://tienda-compras.onrender.com/success",
+        //failure: "https://tienda-compras.onrender.com/failure",
+        //pending: "https://tienda-compras.onrender.com/pending",
       },
 
 
