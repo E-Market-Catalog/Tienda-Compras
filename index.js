@@ -160,7 +160,7 @@ checkoutBtn.addEventListener('click', async () => {
   });
 
   try {
-    const res = await fetch('http://localhost:3001/create-order', {
+    const res = await fetch('https://tienda-compras.onrender.com/create-order', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
