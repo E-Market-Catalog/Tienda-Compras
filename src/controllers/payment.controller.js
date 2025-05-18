@@ -9,11 +9,11 @@ export const createOrder = async (req, res) => {
   try {
     const result = await mercadopage.preferences.create({
       items: req.body.items,  // usa los items que llegan desde el cliente
-      notification_url: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/webhook",
+      notification_url: "https://tienda-compras.onrender.com//webhook",
       back_urls: {
-        success: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/success",
-        //failure: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/failure",
-        //pending: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/pending",
+        success: "https://tienda-compras.onrender.com//success",
+        //failure: "https://tienda-compras.onrender.com//failure",
+        //pending: "https://tienda-compras.onrender.com//pending",
       },
 
 
