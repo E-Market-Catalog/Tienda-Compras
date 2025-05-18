@@ -16,7 +16,7 @@ router.get("/success", (req, res) => {
   res.send(`
     <h1>¡Pago acreditado con éxito!</h1>
     <p>Gracias por tu compra.</p>
-    <button onclick="window.location.href='http://localhost:5500/index.html'">Volver a la tienda</button>
+    <button onclick="window.location.href='https://tienda-compras.onrender.com/index.html'">Volver a la tienda</button>
   `);
 });
 
