@@ -7,7 +7,6 @@ import { fileURLToPath } from "url";
 import paymentRoutes from "./routes/payment.routes.js";
 import cors from 'cors';
 
-
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,15 +16,17 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 
-
-// Rutas
+// Rutas de API
 app.use(paymentRoutes);
 
-// Archivos estáticos (index.html, index.js, etc.)
-app.use(express.static(__dirname));
+// Servir archivos estáticos desde la raíz del proyecto
+app.use(express.static(path.join(__dirname, '..')));
 
-// Servidor
-//app.listen(3001, () => {  console.log("Servidor corriendo en http://localhost:3001");});
+// Ruta principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
