@@ -9,31 +9,16 @@ export const createOrder = async (req, res) => {
   try {
     const result = await mercadopage.preferences.create({
       items: req.body.items,  // usa los items que llegan desde el cliente
-
-      // 👇 AÑADIR ESTO para enviar los datos del comprador
-      payer: {
-        name: "Araceli",
-        surname: "Terrones",
-        email: "jersonybrayan@gmail.com",
-        identification: {
-          type: "DNI",
-          number: "40699073"
-        },
-        phone: {
-          area_code: "51",
-          number: 971010274
-        }
+      notification_url: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/webhook",
+      back_urls: {
+        success: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/success",
+        //failure: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/failure",
+        //pending: "https://1c96-2800-4b0-8002-931f-55e2-d00b-fdaa-64c3.ngrok-free.app/pending",
       },
 
-      notification_url: "https://tienda-compras.onrender.com/webhook",
-      back_urls: {
-        success: "https://tienda-compras.onrender.com/success",
-        failure: "https://tienda-compras.onrender.com/failure",
-        pending: "https://tienda-compras.onrender.com/pending",
-      }
+
     });
 
-    console.log("Preferencia creada con éxito:", result.body);
     res.json(result.body);
   } catch (error) {
     console.error("Error creando preferencia MercadoPago:", error);
@@ -43,27 +28,17 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ message: error.message || "Algo salió mal" });
   }
 };
-
 export const receiveWebhook = async (req, res) => {
   try {
-    const query = req.query;
-    console.log("Webhook recibido:", query);
-
-    if (query.topic === "payment" || query.type === "payment") {
-      const paymentId = query["data.id"] || query.id;
-      const paymentData = await mercadopage.payment.findById(paymentId);
-      console.log("Datos del pago:", paymentData.body);
-    } else if (query.topic === "merchant_order" || query.type === "merchant_order") {
-      const merchantOrderId = query.id;
-      const merchantOrderData = await mercadopage.merchant_orders.findById(merchantOrderId);
-      console.log("Datos de la orden de comercio:", merchantOrderData.body);
-    } else {
-      console.log("Tipo de webhook no manejado:", query);
+    const payment = req.query;
+    console.log(payment);
+    if (payment.type === "payment") {
+      const data = await mercadopage.payment.findById(payment["data.id"]);
+      console.log(data);
     }
-
     res.sendStatus(204);
   } catch (error) {
-    console.error("Error procesando webhook:", error);
-    return res.status(500).json({ message: "Algo salió mal procesando webhook" });
+    console.log(error);
+    return res.status(500).json({ message: "Something goes wrong" });
   }
 };
