@@ -19,6 +19,7 @@ export const createOrder = async (req, res) => {
 
     });
 
+    console.log("Preferencia creada con éxito:", result.body);
     res.json(result.body);
   } catch (error) {
     console.error("Error creando preferencia MercadoPago:", error);
@@ -30,15 +31,24 @@ export const createOrder = async (req, res) => {
 };
 export const receiveWebhook = async (req, res) => {
   try {
-    const payment = req.query;
-    console.log(payment);
-    if (payment.type === "payment") {
-      const data = await mercadopage.payment.findById(payment["data.id"]);
-      console.log(data);
+    const query = req.query;
+    console.log("Webhook recibido:", query);
+
+    if (query.topic === "payment" || query.type === "payment") {
+      const paymentId = query["data.id"] || query.id;
+      const paymentData = await mercadopage.payment.findById(paymentId);
+      console.log("Datos del pago:", paymentData.body);
+    } else if (query.topic === "merchant_order" || query.type === "merchant_order") {
+      const merchantOrderId = query.id;
+      const merchantOrderData = await mercadopage.merchant_orders.findById(merchantOrderId);
+      console.log("Datos de la orden de comercio:", merchantOrderData.body);
+    } else {
+      console.log("Tipo de webhook no manejado:", query);
     }
+
     res.sendStatus(204);
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Something goes wrong" });
+    console.error("Error procesando webhook:", error);
+    return res.status(500).json({ message: "Algo salió mal procesando webhook" });
   }
 };
