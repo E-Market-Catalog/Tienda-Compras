@@ -31,17 +31,25 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ message: error.message || "Algo salió mal" });
   }
 };
+
+
 export const receiveWebhook = async (req, res) => {
   try {
-    const payment = req.query;
-    console.log(payment);
-    if (payment.type === "payment") {
-      const data = await mercadopage.payment.findById(payment["data.id"]);
-      console.log(data);
+    const { topic, id } = req.body;  // MercadoPago envía topic e id en body
+    console.log('Webhook recibido:', topic, id);
+
+    if (topic === "payment") {
+      const payment = await mercadopage.payment.findById(id);
+      console.log('Detalles pago:', payment);
+    } else if (topic === "merchant_order") {
+      const merchantOrder = await mercadopage.merchant_orders.get(id);
+      console.log('Detalles orden:', merchantOrder);
     }
+
     res.sendStatus(204);
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Something goes wrong" });
+    console.error('Error en webhook:', error);
+    res.status(500).json({ message: "Error procesando webhook" });
   }
 };
+
