@@ -35,7 +35,8 @@ export const createOrder = async (req, res) => {
 
 export const receiveWebhook = async (req, res) => {
   try {
-    const { topic, id } = req.body;  // MercadoPago envía topic e id en body
+    const { topic, id } = req.query;  // <-- aquí se cambió
+
     console.log('Webhook recibido:', topic, id);
 
     if (topic === "payment") {
@@ -52,4 +53,3 @@ export const receiveWebhook = async (req, res) => {
     res.status(500).json({ message: "Error procesando webhook" });
   }
 };
-
