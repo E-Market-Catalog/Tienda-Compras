@@ -15,8 +15,8 @@ export const createOrder = async (req, res) => {
       notification_url: "https://tienda-compras.onrender.com/webhook",
       back_urls: {
         success: "https://tienda-compras.onrender.com/success",
-        failure: "https://tienda-compras.onrender.com/failure",
-        pending: "https://tienda-compras.onrender.com/pending",
+        //failure: "https://tienda-compras.onrender.com/failure",
+        //pending: "https://tienda-compras.onrender.com/pending",
       },
 
 
