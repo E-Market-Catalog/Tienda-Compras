@@ -9,14 +9,28 @@ export const createOrder = async (req, res) => {
   try {
     const result = await mercadopage.preferences.create({
       items: req.body.items,  // usa los items que llegan desde el cliente
+
+      // 👇 AÑADIR ESTO para enviar los datos del comprador
+      payer: {
+        name: "Araceli",
+        surname: "Terrones",
+        email: "jersonybrayan@gmail.com",
+        identification: {
+          type: "DNI",
+          number: "40699073"
+        },
+        phone: {
+          area_code: "51",
+          number: "971010274"
+        }
+      },
+
       notification_url: "https://tienda-compras.onrender.com/webhook",
       back_urls: {
         success: "https://tienda-compras.onrender.com/success",
         //failure: "https://tienda-compras.onrender.com/failure",
         //pending: "https://tienda-compras.onrender.com/pending",
-      },
-
-
+      }
     });
 
     console.log("Preferencia creada con éxito:", result.body);
@@ -29,6 +43,7 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ message: error.message || "Algo salió mal" });
   }
 };
+
 export const receiveWebhook = async (req, res) => {
   try {
     const query = req.query;
