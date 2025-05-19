@@ -21,7 +21,7 @@ export const createOrder = async (req, res) => {
         },
         phone: {
           area_code: "51",
-          number: "971010274"
+          number: 971010274
         }
       },
 
