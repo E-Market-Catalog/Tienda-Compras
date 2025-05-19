@@ -9,9 +9,6 @@ export const createOrder = async (req, res) => {
   try {
     const result = await mercadopage.preferences.create({
       items: req.body.items,  // usa los items que llegan desde el cliente
-      payer: {
-        email: "jersonybrayan@gmail.com" // o el email del cliente
-      },
       notification_url: "https://tienda-compras.onrender.com/webhook",
       back_urls: {
         success: "https://tienda-compras.onrender.com/success",
