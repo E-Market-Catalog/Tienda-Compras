@@ -35,21 +35,22 @@ export const createOrder = async (req, res) => {
 
 export const receiveWebhook = async (req, res) => {
   try {
-    const { topic, id } = req.query;  // <-- aquí se cambió
-
-    console.log('Webhook recibido:', topic, id);
+    const topic = req.query.topic;
+    const id = req.query.id;
 
     if (topic === "payment") {
       const payment = await mercadopage.payment.findById(id);
-      console.log('Detalles pago:', payment);
+      console.log("Pago recibido:", payment);
+      // Aquí procesar pago aprobado o rechazado
     } else if (topic === "merchant_order") {
-      const merchantOrder = await mercadopage.merchant_orders.get(id);
-      console.log('Detalles orden:', merchantOrder);
+      const order = await mercadopage.merchant_orders.findById(id);
+      console.log("Orden recibida:", order);
+      // Aquí procesar estado de la orden
     }
 
     res.sendStatus(204);
   } catch (error) {
-    console.error('Error en webhook:', error);
+    console.error("Error en webhook:", error);
     res.status(500).json({ message: "Error procesando webhook" });
   }
 };
